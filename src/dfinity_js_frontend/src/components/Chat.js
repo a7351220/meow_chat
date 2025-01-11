@@ -7,6 +7,7 @@ import toast from "react-hot-toast";
 import { getConversation } from "../utils/chat";
 import TextInput from "./TextInput";
 import { encryptData } from "../utils/encryptData";
+import "../styles/cat-theme.css";
 
 export default function Chat() {
   const [question, setQuestion] = useState("");
@@ -49,88 +50,88 @@ export default function Chat() {
   }, []);
 
   const onValidateOpenaiAPI = (e) => {
-    if (e.target.value.match(/^sk-[a-zA-Z0-9]{32,}$/)) {
-      setOpenaiKey(e.target.value);
-    } else {
-      setOpenaiKey("");
-    }
+    const key = e.target.value;
+    setOpenaiKey(key);
+    
+    const apiKeyFormat = /^sk-(?:proj-)?[A-Za-z0-9_-]{36,}$/;
+    
+    console.log('Key:', key);
+    console.log('Is valid:', apiKeyFormat.test(key));
   };
+  
 
   const onSaveOpenaiKey = () => {
-    if (!openaiKey) return toast.error("Invalid Openai key");
+    const apiKeyFormat = /^sk-(?:proj-)?[A-Za-z0-9_-]{36,}$/;
+    
+    if (!openaiKey || !apiKeyFormat.test(openaiKey)) {
+      console.log('Invalid key:', openaiKey);
+      return toast.error("Invalid API key format");
+    }
+    
     const encryptedApiKey = encryptData(openaiKey);
     localStorage.setItem("icp-dai-open-ai", encryptedApiKey);
-    toast.success("Openai key successfully saved and crypted");
+    toast.success("API key successfully saved and encrypted");
     setOpenaiKey("");
   };
 
   return (
-    <div className="wrapper">
-      <div className="wrapper-header">
-        <h1>Dai</h1>
+    <div className="cat-wrapper">
+      <div className="cat-header">
+        <h1>Meow Chat</h1>
         <button
-          className="auth-button auth-button__hover"
+          className="cat-button"
           onClick={() => (window.auth.isAuthenticated ? logout() : login())}
         >
           {window.auth.isAuthenticated ? "Log out" : "Login"}
         </button>
       </div>
-      <div style={{ display: "flex", gap: 10 }}>
+      <div className="cat-input-container">
         <TextInput
           onChange={onValidateOpenaiAPI}
-          placeholder="Pass your Openai API key here..."
+          placeholder="Paste your API key here... meow!"
+          value={openaiKey}
+          type="text"
+          style={{ width: '100%' }}
         />
         <button
-          className="auth-button auth-button__hover"
+          className="cat-button"
           onClick={onSaveOpenaiKey}
         >
           Save
         </button>
       </div>
-      <div className="container">
-        <div className="right">
-          <div className="chat active-chat">
-            <div className="conversation-start"></div>
-            {chatMessage.map((message, index) => (
-              <div
-                key={index}
-                className={`bubble ${
-                  message.role === "user" ? "me" : "assistant"
-                } ${
-                  chatMessage.length - 1 === index && !loading
-                    ? "last-message"
-                    : ""
-                }
-                `}
-              >
-                {message.content}
-              </div>
-            ))}
-
-            {loading && (
-              <div className={`bubble assistant`}>
-                <Loading />
-              </div>
-            )}
+      <div className="cat-chat">
+        <div className="conversation-start"></div>
+        {chatMessage.map((message, index) => (
+          <div
+            key={index}
+            className={`cat-bubble ${message.role === "user" ? "me" : ""}`}
+          >
+            {message.content}
           </div>
-          <div className="write">
-            <input
-              placeholder="Ask me..."
-              type="text"
-              value={question}
-              onChange={(e) => setQuestion(e.target.value)}
-              onKeyDown={(e) => (e.key === "Enter" ? handleSubmit(e) : null)}
-            />
-            {loading && <Loading />}
-            {!loading && (
-              <a
-                onClick={(e) => {
-                  handleSubmit(e);
-                }}
-                className="write-link send"
-              ></a>
-            )}
+        ))}
+        {loading && (
+          <div className="cat-bubble">
+            <Loading />
           </div>
+        )}
+        <div className="cat-input-container">
+          <input
+            className="cat-input"
+            placeholder="Ask me something... meow!"
+            type="text"
+            value={question}
+            onChange={(e) => setQuestion(e.target.value)}
+            onKeyDown={(e) => (e.key === "Enter" ? handleSubmit(e) : null)}
+          />
+          {!loading && (
+            <button
+              className="cat-button"
+              onClick={handleSubmit}
+            >
+              Send 🐾
+            </button>
+          )}
         </div>
       </div>
     </div>

@@ -8,6 +8,13 @@ const endpoints = {
   deleteConversation: (userIdentity) => `conversation/${userIdentity}`,
 };
 
+const isValidApiKey = (key) => {
+  const oldFormat = /^sk-[A-Za-z0-9]{48}$/;
+  const newFormat = /^sk-proj-[A-Za-z0-9_-]{100,}$/;
+  
+  return oldFormat.test(key) || newFormat.test(key);
+}
+
 export async function createConversation(userIdentity) {
   try {
     const response = await fetch(`${baseUrl}/${endpoints.createConversation}`, {

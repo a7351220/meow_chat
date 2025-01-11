@@ -1,0 +1,66 @@
+.cat-wrapper {
+  background: #fff6f6;
+}
+
+.cat-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 1rem;
+  background: #ffe4e4;
+  border-bottom: 3px solid #ffb7b7;
+}
+
+.cat-header h1 {
+  color: #ff6b6b;
+  font-family: "Comic Sans MS", cursive;
+  margin: 0;
+}
+
+.cat-header h1::before {
+  content: "🐱 ";
+}
+
+.cat-chat {
+  background: #fff6f6;
+  border-radius: 15px;
+  padding: 15px;
+  margin: 10px;
+}
+
+.cat-bubble {
+  background: #ffe4e4;
+  border-radius: 20px;
+  padding: 15px;
+  margin: 10px 0;
+  box-shadow: 0 2px 5px rgba(255, 107, 107, 0.1);
+}
+
+.cat-bubble.me {
+  background: #ffb7b7;
+  color: white;
+}
+
+.cat-input-container {
+  display: flex;
+  gap: 10px;
+  padding: 15px;
+  background: #ffe4e4;
+  border-radius: 15px;
+  margin: 10px;
+}
+
+.cat-button {
+  background: #ff6b6b;
+  color: white;
+  border: none;
+  border-radius: 20px;
+  padding: 10px 20px;
+  cursor: pointer;
+  transition: all 0.3s ease;
+}
+
+.cat-button:hover {
+  background: #ff8787;
+  transform: scale(1.05);
+} 
